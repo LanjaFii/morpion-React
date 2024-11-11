@@ -15,6 +15,8 @@
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  }
   "homepage": "https://lanjafii.github.io/morpion-react/"
 }
