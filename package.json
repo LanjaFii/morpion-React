@@ -2,6 +2,7 @@
   "name": "react.dev",
   "version": "0.0.0",
   "main": "/src/index.js",
+  "homepage": "https://LanjaFii.github.io/morpion-React/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -18,5 +19,4 @@
   "devDependencies": {
     "gh-pages": "^3.2.3"
   }
-  "homepage": "https://lanjafii.github.io/morpion-react/"
 }
