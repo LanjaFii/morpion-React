@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/morpion-react/static/css/main.e4af0567.css",
+    "main.js": "/morpion-react/static/js/main.69955088.js",
+    "index.html": "/morpion-react/index.html",
+    "main.e4af0567.css.map": "/morpion-react/static/css/main.e4af0567.css.map",
+    "main.69955088.js.map": "/morpion-react/static/js/main.69955088.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e4af0567.css",
+    "static/js/main.69955088.js"
+  ]
+}
