@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-//Composant carrée kely
+// Composant carré tsirairay
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -9,13 +9,9 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-//Fonction par défaut mampiseo ny zavatra eo @ écran
-export default function Board() {
-  const [tour, setTour] = useState(true);
-  const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
-  //Fonction manisy anle X sy O amle cases
+// Fonction par défaut pour iaffichena ny plateau
+function Board({ xIsNext, squares, onPlay }) {
+  // Fonction pour gérer les clics sur les cases
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -26,32 +22,31 @@ export default function Board() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares); // Fonction itondrana anle plateau mankany amn composant Game
   }
 
-  // Bout de code anaovana anle soeratra eo ambony
+  // Déterminer l'état de la partie
   const winner = calculateWinner(squares);
   const allNotNull = squares.every(
     (element) => element !== null && element !== undefined
   );
   let status;
+  let gifSource = null;
   if (winner) {
     status = winner + " a gagné";
+    gifSource =
+      winner === "X"
+        ? "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDZ5MXQ2MDVtNTVtbjVvZDBnb294d2ZkZG0xaHFhZXIxbW0wZmlrZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/o75ajIFH0QnQC3nCeD/giphy.webp"
+        : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzlueGVpc3ZlZDA3NG5tem52bGIwaTl4cDR3d2dqdDFlNjIxc3g4OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ddHhhUBn25cuQ/giphy.webp";
   } else if (allNotNull) {
     status = "Match nul";
+    gifSource =
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGhrbTBlYzE4MGd4cGIzZDB2eHoxcWJyOG5zZHdwaW1henBmcG1jaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/03GtPbvwrQPdtVPNzq/giphy.webp";
   } else {
     status = "Prochain tour : " + (xIsNext ? "X" : "O");
   }
 
-  // Fonction anle bouton nouveau
-  function newGame() {
-    setSquares(Array(9).fill(null));
-    setTour(!tour);
-    setXIsNext(tour);
-  }
-
-  //Izay zavatra retourné eo @ écran
+  // Affichage du plateau
   return (
     <>
       <div className="status">{status}</div>
@@ -70,12 +65,16 @@ export default function Board() {
         <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
         <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
-      <button onClick={newGame}>Nouveau</button>
+      {gifSource && (
+        <div className="gif-container">
+          <img src={gifSource} alt="result gif" className="result-gif" />
+        </div>
+      )}
     </>
   );
 }
 
-//Fonction mampahafantatra ny mpandresy
+// Fonction pour déterminer le gagnant
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -94,4 +93,71 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+// Fonction principale newGame
+export default function Game() {
+  // Initialisation aléatoire : soit "X" (true), soit "O" (false)no manomboka
+  const [firstPlayer, setFirstPlayer] = useState(
+    Math.random() < 0.5 ? "X" : "O"
+  );
+  const [xIsNext, setXIsNext] = useState(firstPlayer === "X");
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[currentMove];
+
+  // Fonction mampiditra anle plateau anaty historique sady manova tour
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+    setXIsNext(!xIsNext);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    if (nextMove % 2 === 0) {
+      setXIsNext(firstPlayer === "X");
+    } else {
+      setXIsNext(firstPlayer === "O");
+    }
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = "Aller au coup #" + move;
+    } else {
+      description = "Revenir au début";
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+  // Ny zavatra retournen ny écran
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <button onClick={newGame} className="nouv">
+          Nouveau
+        </button>
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+
+  // Fonction pour commencer une nouvelle partie
+  function newGame() {
+    setHistory([Array(9).fill(null)]); // Reinitialisation de l'historique
+    setCurrentMove(0);
+    const newFirstPlayer = firstPlayer === "X" ? "O" : "X";
+    setFirstPlayer(newFirstPlayer); // On inverse qui commence
+    setXIsNext(newFirstPlayer === "X"); // On définit qui commence pour le nouveau jeu
+  }
 }
