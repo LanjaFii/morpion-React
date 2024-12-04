@@ -3,83 +3,164 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: sans-serif;
   margin: 20px;
   padding: 0;
-}
-
-h1 {
-  margin-top: 0;
-  font-size: 22px;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-h4 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-h5 {
-  margin-top: 0;
-  font-size: 14px;
-}
-
-h6 {
-  margin-top: 0;
-  font-size: 12px;
-}
-
-code {
-  font-size: 1.2em;
-}
-
-ul {
-  padding-inline-start: 20px;
-}
-
-* {
-  box-sizing: border-box;
+  background-color: #222; /* Fond sombre */
+  color: #f4f4f9; /* Texte clair pour contraste */
 }
 
 .square {
-  color: rgb(173, 34, 62);
-  background: #ffdd00;
-  border: 1px solid #999;
-  float: left;
+  background: #4caf50; /* Fond vert pour les cases */
+  border: 2px solid #fbfbfb; /* Bordure de base */
+  color: white;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  height: 80px;
+  width: 80px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+  border-radius: 8px; /* Coins arrondis */
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+/* Effet hover sur les cases */
+.square:hover {
+  background-color: #66bb6a;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px 5px rgba(0, 255, 255, 1); /* Effet néon plus intense */
+}
+
+/* Effet de clic sur les cases */
+.square:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.5); /* Légère atténuation du néon */
+}
+
+.board-row {
+  display: flex;
+  justify-content: center;
+  gap: 0px; /* Espacement entre les cases */
+  margin: 0;
+  padding: 0;
 }
 
 .status {
   margin-bottom: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #f4f4f9; /* Texte clair */
+  text-align: center;
 }
+
 .game {
   display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alignement des items vers le haut */
   flex-direction: row;
+  gap: 20px; /* Ajout d'un espacement entre le plateau et la section info */
+  margin-top: 50px;
 }
 
 .game-info {
+  margin-top: 50px;
   margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  top: -50px; /* Ajustement si nécessaire */
+}
+
+.game-info ol {
+  list-style-type: none; /* Retirer les numéros des coups */
+  padding-left: 0;
+  margin: 0;
+}
+
+.game-info button {
+  background-color: #333;
+  color: white;
+  border: 2px solid #999;
+  padding: 8px 16px;
+  font-size: 1em;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Boutons de voyage dans le temps (alignement à droite) */
+.game-info button span {
+  margin-left: 10px;
+  display: block;
+}
+
+.game-info button:hover {
+  background-color: #444;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8); /* Effet néon au survol */
+}
+
+.game-info button:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); /* Effet atténué au clic */
+}
+
+/* Nouveau bouton avec classe "nouv" */
+.nouv {
+  background-color: #ff4081; /* Nouveau fond rose néon */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.2em;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+.nouv:hover {
+  background-color: #f50057; /* Rose plus foncé */
+  box-shadow: 0 0 20px rgba(255, 64, 129, 1); /* Néon intense au survol */
+}
+
+.nouv:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5); /* Effet atténué au clic */
+}
+
+/* Ajustement pour mieux aligner le jeu et "game-info" à droite */
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px; /* Décalage pour donner de la place à la section game-info */
+}
+
+/* Conteneur carré pour le GIF */
+.gif-container {
+  width: 200px; /* Largeur de 200px */
+  height: 200px; /* Hauteur de 200px */
+  display: flex; /* Utilise flexbox pour centrer le contenu */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  margin-top: 20px; /* Espacement au-dessus du conteneur */
+  overflow: hidden; /* Cache toute partie du GIF qui dépasse du conteneur */
+  border-radius: 10px; /* Coins arrondis */
+  border: 3px solid #f4f4f9; /* Bordure légère pour le conteneur */
+}
+
+.result-gif {
+  width: 100%; /* Assure que le GIF prend toute la largeur disponible */
+  height: 100%; /* Assure que le GIF prend toute la hauteur disponible */
+  object-fit: cover; /* L'image s'adapte à l'intérieur du conteneur tout en gardant son ratio */
 }
